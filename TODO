@@ -2,14 +2,12 @@ TODO list for SeeBorg v1.0
 --------------------------
 
 in no particular order:
- - Use autoconf and automake to generate makefiles
- - Some of the PyBorg features aren't implemented yet
- - On Windows, setlocale() doesn't have any effect
-   (this makes MSVC build be unable to do case conversion on
-   russian letters, and mingw32 build completely ignores them)
+ - Implement rest of the PyBorg features
  - Any form of control over join invites behaviour
- - Better CTCP replies (replies to everything with the same thing)
+ - Better CTCP replies (it replies to everything with the same thing at the 
+   moment)
  - Optimize (there's a lot of room for that, like, remove std::string)
  - Write documentation (man pages, win32 chm, so on)
+ - Use SQLite for word databases.
 
 For more, grep the source files for 'TODO'.

@@ -1,3 +1,24 @@
+/*
+    This file is part of SeeBorg.
+	Copyright (C) 2003, 2006 Eugene Bujak.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+*/
+
+
 #ifdef __unix__
 #include <unistd.h>
 #include <sys/wait.h>
@@ -50,6 +71,7 @@ typedef struct botsettings_s {
 	username = "SeeBorg";
 	realname = "I am SeeBorg v" SEEBORGVERSIONSTRING;
 	quitmessage = "Byebye...";
+	ctcpversionstring = "mIRC v6.2 Khaled Mardam-Bey";
 	replyrate = 1;
 	replyrate_magic = 33;
 	replyrate_mynick = 33;
@@ -74,6 +96,7 @@ typedef struct botsettings_s {
   set<string>			channels;
   vector<ircbotowner_t>	owners;
   string				quitmessage;
+  string				ctcpversionstring;
 
   // Other settings
   float					replyrate;
@@ -117,6 +140,7 @@ static configsetting_t configsettings[] = {
   {"username", "Bot's username (will show as ~<username>@some.host.com)", &botsettings.username, NULL, NULL},
   {"realname", "Bot's realname (will show in whois)", &botsettings.realname, NULL, NULL},
   {"quitmessage", "Bot's quit message", &botsettings.quitmessage, NULL, NULL},
+  {"ctcpversion", "Bot's CTCP version string (if stealth is enabled)", &botsettings.ctcpversionstring, NULL, NULL},
 
   {NULL, NULL, NULL, NULL, NULL},	// Newline in cfg
 
@@ -391,10 +415,15 @@ char *ProcOnCTCP(BN_PInfo I,const char Who[],const char Whom[],const char Type[]
   BN_ExtractNick(Who, nickname, sizeof(nickname));
   printf ("CTCP %s query by %s for %s\n", Type, nickname, Whom);
 
-  char  replystring[4096];
+  char replystring[4096];
+  memset(replystring, 0, sizeof(replystring));
   if (!strcasecmp(Type, "VERSION")) {
-	  sprintf (replystring, "mIRC32 v5.7 K.Mardam-Bey");
-  } else sprintf (replystring, "Forget about it");
+  	if (botsettings.stealth) {
+  		snprintf (replystring, 4095, "%s :%c%s", botsettings.ctcpversionstring.c_str());
+  	} else {
+  		snprintf (replystring, 4095, "SeeBorg v" SEEBORGVERSIONSTRING);
+  	}
+  } else snprintf (replystring, 4095, "Forget about it");
 
   return strdup(replystring);
 }
@@ -666,6 +695,19 @@ string CMD_ircHelp_f(class SeeBorg* self, const string command) {
   return retstr;
 }
 
+string CMD_Stealth_f(class SeeBorg* self, const string command) {
+  string retstr;
+  if (CMA_Argc() < 2) {
+	retstr = "Stealth is ";
+	retstr += (botsettings.stealth) ? "enabled" : "disabled";
+	return retstr;
+  }
+
+  botsettings.stealth = atoi(CMA_Argv(1));
+  retstr = "Stealth is set to ";
+  retstr += (botsettings.stealth) ? "enabled" : "disabled";
+  return retstr;
+}
 
 string CMD_Learning_f(class SeeBorg* self, const string command) {
   string retstr;
@@ -730,7 +772,7 @@ int main (int argc, char* argv[]) {
   if (argc < 2) {
     if (botsettings.server.empty()) {
 	  SaveBotSettings();
-	  printf ("No server to connect to (check seeborg-irc.cfg)");
+	  printf ("No server to connect to (check seeborg-irc.cfg)\n");
 	  return 1;
 	}
   } else {

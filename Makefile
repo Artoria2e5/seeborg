@@ -6,14 +6,24 @@ TGTDIR = ./
 FNAMEIRC = seeborg-irc
 FNAMELINEIN = seeborg-linein
 
+##
+## If you're on Windows using MingW, uncomment the line below
+#LDFLAGS += -lwsock32
+
+##
+## If you're getting link errors on any unix, try uncommeting this line below
+#CFUSER = -pthread
+
 CFCPU = -march=pentium
 CFOPT = -O3 -fomit-frame-pointer -fforce-addr -finline -funroll-loops -fexpensive-optimizations
-CFUSER = -pthread
 
 #CFDEBUG = -g3
 #CFDEBUG += -pg
+#CFDEBUG += -DPROFILE
+
+#CFDEBUG += -Wall
+
 #LDFLAGS = -s
-LDFLAGS = -lwsock32
 
 SRCS = seeborg.cpp seeutil.cpp
 
@@ -38,25 +48,13 @@ OBJ_IRC = $(OBJ_IRCTMP:%.c=%.o)
 OBJ_LINEINTMP = $(SRC_LINEIN:%.cpp=%.o)
 OBJ_LINEIN = $(OBJ_LINEINTMP:%.c=%.o)
 
-DEP_IRCTMP = $(SRC_IRC:%.cpp=%.d)
-DEP_IRC = $(DEP_IRCTMP:%.c=%.d)
-
-DEP_LINEINTMP = $(SRC_LINEIN:%.cpp=%.d)
-DEP_LINEIN = $(DEP_LINEINTMP:%.c=%.d)
-
 OBJSTMP = $(SRCS:%.cpp=%.o)
 OBJS = $(OBJSTMP:%.c=%.o)
-
-DEPSTMP = $(SRCS:%.cpp=%.d)
-DEPS = $(DEPSTMP:%.c=%.d)
-
-DEPS += $(DEP_LINEIN) $(DEP_IRC)
 
 all: compile
 
 clean:
 	rm -f $(TGT_IRC) $(TGT_LINEIN) $(OBJS) $(OBJ_IRC) $(OBJ_LINEIN)
-# $(DEPS)
 
 compile: makedirs $(TGT_LINEIN) $(TGT_IRC)
 
@@ -67,15 +65,6 @@ $(TGT_IRC): $(OBJS) $(OBJ_IRC)
 $(TGT_LINEIN): $(OBJS) $(OBJ_LINEIN)
 	@echo Linking $@...
 	$(CXX) $(CXXFLAGS) $(OBJS) $(OBJ_LINEIN) -o $@ $(LDFLAGS)
-
-
-.cpp.d:
-	@echo Updating $@...
-	@$(CXX) $(CXXFLAGS) -MM $< -o $@
-
-.c.d:
-	@echo Updating $@...
-	@$(CC) $(CFLAGS) -MM $< -o $@
 
 .cpp.o:
 	@echo Compiling $@...

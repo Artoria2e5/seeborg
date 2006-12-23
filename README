@@ -34,16 +34,13 @@ server         - server to connect to (default: none)
 serverport     - port of the server to connect to (default: 6667)
 nickname       - nickname (default: SeeBorg)
 username       - username (default: SeeBorg)
-realname       - realname (default: I am SeeBorg v0.5 beta)
+realname       - realname (default: I am SeeBorg v0.52 beta)
 quitmessage    - quit message (default: ByeBye...)
-learning       - '1' if learning new words is enabled, '0' if disabled
-                 (default: 1)
-stealth        - Doesn't work yet, will enable/disable masking as a
-                 regular mIRC user
-joininvites    - Doesn't work yet, will enable/disable joining to channel
-                 invitations
+learning       - Enable/disable learning capability. (default: enabled)
+stealth        - Enable/disable masking as a regular mIRC user. 
+                 (default: enabled)
 
-replyrate      - Bot's general reply rate, in percent (default: 1)
+replyrate      - Bot's reply rate, in percent (default: 1)
 replynick      - Bot's reply rate to his nickname, in percent (default: 33)
 replymagic     - Bot's reply rate to magic words set in 'magicwords',
                  in percent (default: 33)
@@ -59,29 +56,28 @@ owners         - Space separated bot owners' nickname list, the owner's
 
 Portability:
 ------------
-It compiles succesfully with GCC v2.95.3, GCC v3.2, GCC v3.2.2 and MSVC v6.0.
+It compiles succesfully with GCC v2.95.3, GCC v3.2, GCC v3.2.2 and MSVC v6.0. 
 Tested succesfully on Linux 2.4.x, FreeBSD 4.6.2, mingw32 and Win32.
 
-I see no reason why it shouldn't compile and run on any other platform
-that is supported by botnet library and supports standard C++.
+I see no reason why it shouldn't compile and run on any other platform that is 
+supported by botnet library and supports standard C++.
 
-If compiling under mingw32 and cygwin, you would want to comment out the 
-CFUSER=-ptrhead line and uncomment LDFLAGS line (one with -lwsock32)
-in the Makefiles.
+If compiling under mingw32 and cygwin, you would want to uncomment LDFLAGS 
+line (one with -lwsock32) in the Makefiles.
 
 
 Credits and copyright:
 ----------------------
-If you find this program entertaining, you might want to help me develop it.
+If you find this program entertaining, you might want to help me develop it. 
 The TODO file contains a list of yet-to-be-done things/ideas.
 
-If you plan using BotNet, please download the original package, since this
-one is a cut-down version and tailored for SeeBorg, your mileage may vary.
+If you plan using BotNet, please download the original package, since this one 
+is a cut-down version and tailored for SeeBorg, your mileage may vary.
 
-SeeBorg is (C) 2003 Eugene 'HMage' Bujak.
+
+SeeBorg is (C) 2003-2006 Eugene 'HMage' Bujak.
+
 BotNet is (C) Christophe CALMEJANE 'Ze KiLleR / SkyTech'
 
-This software is subject to the terms of the
-GNU General Public License (GPL) - see the accompanying
-'COPYING' file.
-
+This software is subject to the terms of the GNU General Public License (GPL), 
+see the accompanying 'COPYING' file.
