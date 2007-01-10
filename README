@@ -1,35 +1,39 @@
-SeeBorg readme file
--------------------
-SeeBorg: a C++ clone of PyBorg, the IRC chatbot written by Tom Morton.
+= SeeBorg readme file =
+-----------------------
+SeeBorg is a random phrase bot that will sit on IRC channel, learning the 
+talk, and periodically replying with something that is generated from the talk 
+learned before. It usually doesn't make much sense, but sometimes it's funny, 
+and sometimes very hilarious.
 
-SeeBorg is a random phrase bot that will sit on IRC channel, learning words,
-and periodically (configurable) replying with something that doesn't make
-much sense at all, but sometimes it's at least funny.
+There are some configuration options that will make you able to tweak some of 
+the bot's behaviour. Also if you set yourself as an owner, you will get access 
+to IRC trigger commands (those that begin with '!').
 
-It can learn in any language, not just english, but for better character
-processing (like case conversion), you will need to set appropriately
-your system locale.
+It can learn in any language, not just english, but for better character 
+processing (like case conversion), you will need to set appropriately your 
+system locale.
 
-It uses BotNet library written by Christophe CALMEJANE to connect and
-interact with IRC servers. The library is included in the tarball.
+To compile, read the Makefiles and make any changes required (you may probably 
+want to change CFCPU to better value), then type `make' and fix the errors 
+which will be displayed, if any. SeeBorg is in development and probably won't 
+work as you expect.
 
-To compile, read the Makefiles and make any changes required (you may
-probably want to change CFCPU to better value), then type `make' and fix
-the errors which will be displayed, if any. SeeBorg is in very early stage
-of development and probably won't work for you at all yet.
+After running "make", you'll end up with two executables - "seeborg-irc" and 
+"seeborg-linein", these are IRC client or linein interactive mode 
+respectively. The linein is useful for offline chat with the bot and to test 
+the modifications done to the dictionary.
 
-After running make, you'll end up with two executables - seeborg-irc and
-seeborg-line, that is, the seeborg that communicates on IRC or linein.
-The linein is useful for offline chat with the bot and to test the
-modifications done to the dictionary.
+Without any parameters, seeborg-irc reads configuration from "seeborg-irc.cfg" 
+file located in current working directory. If it doesn't exist, it will create 
+one and terminate, suggesting you to inspect the config file, that would be a 
+good idea.
 
-Without any parameters, seeborg-irc reads configuration from seeborg-irc.cfg
-located in current working directory. If it doesn't exist, it will create one
-and terminate, suggesting you to inspect the config file, that's a good idea.
+If you find this program entertaining, you might want to help me develop it. 
+The TODO file contains a list of yet-to-be-done things/ideas.
 
 
-Config settings:
-----------------
+== Configuration settings ==
+----------------------------
 server         - server to connect to (default: none)
 serverport     - port of the server to connect to (default: 6667)
 nickname       - nickname (default: SeeBorg)
@@ -54,8 +58,8 @@ owners         - Space separated bot owners' nickname list, the owner's
                  hostname will be locked after each bot restart. (no default)
 
 
-Portability:
-------------
+== Portability ==
+-----------------
 It compiles succesfully with GCC v2.95.3, GCC v3.2, GCC v3.2.2 and MSVC v6.0. 
 Tested succesfully on Linux 2.4.x, FreeBSD 4.6.2, mingw32 and Win32.
 
@@ -66,18 +70,20 @@ If compiling under mingw32 and cygwin, you would want to uncomment LDFLAGS
 line (one with -lwsock32) in the Makefiles.
 
 
-Credits and copyright:
-----------------------
-If you find this program entertaining, you might want to help me develop it. 
-The TODO file contains a list of yet-to-be-done things/ideas.
+== Credits and copyright ==
+---------------------------
+This software comes with ABSOLUTELY NO WARRANTY and is subject to the terms of 
+the GNU General Public License (GPL), see the accompanying 'COPYING' file.
+
+This software uses Markov Chain algorithm for building reply messages. It is a 
+C++ clone of PyBorg, originally written by Tom Morton.
+
+This software uses BotNet library written by Christophe CALMEJANE to connect 
+and interact with IRC servers. The library is included in the tarball.
 
 If you plan using BotNet, please download the original package, since this one 
 is a cut-down version and tailored for SeeBorg, your mileage may vary.
 
-
 SeeBorg is (C) 2003-2006 Eugene 'HMage' Bujak.
 
 BotNet is (C) Christophe CALMEJANE 'Ze KiLleR / SkyTech'
-
-This software is subject to the terms of the GNU General Public License (GPL), 
-see the accompanying 'COPYING' file.
