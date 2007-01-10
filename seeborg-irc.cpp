@@ -137,7 +137,7 @@ static configsetting_t configsettings[] = {
   {"serverport", "Server port", NULL, NULL, &botsettings.serverport},
 
   {"nickname", "Bot's nickname", &botsettings.nickname, NULL, NULL},
-  {"username", "Bot's username (will show as ~<username>@some.host.com)", &botsettings.username, NULL, NULL},
+  {"username", "Bot's username (will show as ~<username>@your.host.com)", &botsettings.username, NULL, NULL},
   {"realname", "Bot's realname (will show in whois)", &botsettings.realname, NULL, NULL},
   {"quitmessage", "Bot's quit message", &botsettings.quitmessage, NULL, NULL},
   {"ctcpversion", "Bot's CTCP version string (if stealth is enabled)", &botsettings.ctcpversionstring, NULL, NULL},

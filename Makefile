@@ -8,7 +8,7 @@ FNAMELINEIN = seeborg-linein
 
 ##
 ## If you're on Windows using MingW, uncomment the line below
-#LDFLAGS += -lwsock32
+LDFLAGS += -lwsock32
 
 ##
 ## If you're getting link errors on any unix, try uncommeting this line below

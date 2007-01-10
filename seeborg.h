@@ -27,6 +27,8 @@
 #pragma warning (disable: 4503)
 #endif
 
+#include <stdio.h>
+
 #ifdef _WIN32
 #define strcasecmp stricmp
 #define snprintf _snprintf

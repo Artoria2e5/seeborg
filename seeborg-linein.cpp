@@ -28,13 +28,13 @@
 seeborg_t gSeeBorg;
 
 void PrintReply(string text) {
-  printf ("<Seeborg> %s\n", text.c_str());
+  fprintf (stdout, "<Seeborg> %s\n", text.c_str());
 }
 
 
 int main (int argc, char* argv[]) {
   setlocale(LC_ALL, "");
-  printf ("SeeBorg v" SEEBORGVERSIONSTRING ", copyright (C) 2003 Eugene Bujak.\n\n");
+  fprintf (stdout, "SeeBorg v" SEEBORGVERSIONSTRING ", copyright (C) 2003 Eugene Bujak.\n\n");
   string body;
   srand(time(NULL));
 
