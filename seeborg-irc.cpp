@@ -251,7 +251,6 @@ bool checkReplying(const vector<wstring> *keylist, const float chance, const wst
   if (keylist == NULL) throwdice = true;
   else {
 	size_t sz = keylist->size();
-	if (sz == 0) throwdice = true;
 	for (size_t i = 0; i < sz; i++) {
 	  wstring curword = (*keylist)[i];
 	  lowerString(curword);
