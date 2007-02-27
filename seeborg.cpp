@@ -127,7 +127,7 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 	done = false;
 	while (!done) {
 		if (words.find(sentence.back()) == words.end()) {
-			see_printstring(stderr, "%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
+			see_printstring(stderr, L"%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
 		}
 
 		vector<wstring> linewords;
@@ -160,7 +160,7 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 	done = false;
 	while (!done) {
 		if (words.find(sentence.back()) == words.end()) {
-			see_printstring(stderr, "%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
+			see_printstring(stderr, L"%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
 		}
 		
 		vector<wstring> linewords;
