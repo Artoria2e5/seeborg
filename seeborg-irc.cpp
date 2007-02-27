@@ -87,7 +87,7 @@ botsettings_t botsettings;
 // ---------------------------------------------------------------------------
 void LoadBotSettings() {
   wstring str;
-  FILE* f = wfopen (L"seeborg-irc.cfg", L"r");
+  FILE* f = fopen ("seeborg-irc.cfg", "r");
   if (f == NULL) return;
   
   while (fReadStringLine (f, str)) {
@@ -149,7 +149,7 @@ void SaveBotSettings() {
 	return;
   }
   
-  f = wfopen (L"seeborg-irc.cfg", L"w");
+  f = fopen ("seeborg-irc.cfg", "w");
   if (f == NULL) {
 	// TODO: write an error and warning that settings couldn't be saved
 	return; 

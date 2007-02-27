@@ -301,7 +301,7 @@ wstring CMD_Known_f(class SeeBorg* self, wstring command) {
 		int wordcontexts = ((*wit).second).size();
 		snwprintf (retstr, 4096, L"\"%s\" is known (known as \"%s\", %i contexts)", tokenizer_argv(self->tokenizer, 1), curword.c_str(), wordcontexts);
 	} else {
-		snwprintf (retstr, 4096, L"%s is unknown, (was looking for \"%s\")", tokenizer_argv(self->tokenizer, 1), curword);
+		snwprintf (retstr, 4096, L"%s is unknown, (was looking for \"%s\")", tokenizer_argv(self->tokenizer, 1), curword.c_str());
 	}
 	retstr[4095] = L'\0';
 	

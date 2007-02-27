@@ -35,7 +35,7 @@ extern "C" {
  * Don't use MB_CUR_MAX for n, size that macro uses current locale -
  * use 6 as maximum instead.
  */
-int utf8_mbtowc(int *pwc, const char *s, size_t n);
+int utf8_mbtowc(wint_t *pwc, const char *s, size_t n);
 
 /*
  * UTF-8 equivalent of the C library's wctomb().
@@ -43,7 +43,7 @@ int utf8_mbtowc(int *pwc, const char *s, size_t n);
  *
  * Return value less than zero means an error.
  */
-int utf8_wctomb(char *s, int wc1);
+int utf8_wctomb(char *s, wint_t wc1);
 
 /*
  * UTF-8 equivalent of the C library's mbstowcs().

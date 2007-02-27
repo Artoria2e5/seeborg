@@ -79,11 +79,11 @@ int lowerString(wstring &str) {
 }
 
 int lowerString(wchar_t* str) {
-  wcslwr(str);
-  //	int sz = wcslen(str);
-  //	for (int i = 0; i < sz; i++) {
-  //		str[i] = towlower(str[i]);
-  //	}
+//  wcslwr(str);
+  int sz = wcslen(str);
+  for (int i = 0; i < sz; i++) {
+    str[i] = towlower(str[i]);
+  }
   
   return true;
 }
@@ -231,7 +231,7 @@ size_t tokenizer_tokenize(tokenizer_t* tokenizer, const wchar_t* wcstr) {
 	while (*tokenstart && iswspace(*tokenstart)) tokenstart++;
 	
 	// if we reach end of string before new token starts, return
-	if (*tokenstart == NULL) return tokenizer->argc;
+	if (*tokenstart == L'\0') return tokenizer->argc;
 	
 	tokenend = tokenstart;
 	while (*tokenend && !iswspace(*tokenend)) tokenend++;

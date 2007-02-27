@@ -38,6 +38,8 @@ extern "C" {
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <wchar.h>
+#include <wctype.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -58,6 +60,8 @@ typedef unsigned int uint32_t;
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #else
+#define vsnwprintf vswprintf
+#define snwprintf swprintf
 #include <ctype.h>
 #include <inttypes.h>
 #endif
@@ -121,7 +125,7 @@ inline void see_printstring(FILE *f, wchar_t* format, ...) {
   WriteConsoleW(outhandle, outbuf, retval, &numwritten, NULL);
 #else
   if (f != stderr) f = stdout;
-  fputs(outbuf, f);
+  fputws(outbuf, f);
 #endif
 }
 

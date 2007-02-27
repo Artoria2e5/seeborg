@@ -8,16 +8,16 @@ FNAMELINEIN = seeborg-linein
 
 ##
 ## If you're on Windows using MingW, uncomment the line below
-LDFLAGS += -lwsock32
+#LDFLAGS += -lwsock32
 
 ##
 ## If you're getting link errors on any unix, try uncommeting this line below
-#CFUSER = -pthread
+CFUSER = -pthread
 
-CFCPU = -march=pentium
-CFOPT = -O3 -fomit-frame-pointer -fforce-addr -finline -funroll-loops -fexpensive-optimizations
+#CFCPU = -march=pentium
+#CFOPT = -O3 -fomit-frame-pointer -fforce-addr -finline -funroll-loops -fexpensive-optimizations
 
-#CFDEBUG = -g3
+CFDEBUG = -g3
 #CFDEBUG += -pg
 #CFDEBUG += -DPROFILE
 
@@ -25,7 +25,7 @@ CFOPT = -O3 -fomit-frame-pointer -fforce-addr -finline -funroll-loops -fexpensiv
 
 #LDFLAGS = -s
 
-SRCS = seeborg.cpp seeutil.cpp
+SRCS = seeborg.cpp seeutil.cpp utf8.c
 
 # -------
 #
