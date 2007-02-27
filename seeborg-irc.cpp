@@ -608,7 +608,7 @@ void ProcOnQuit (BN_PInfo I, const char Who[],const char Msg[]) {
 	nickname.c_str(), username.c_str(), hostname.c_str(), message.c_str());
 }
 
-// returned string is freed later by BotNet, so we malloc() the return string each call
+// returned string is freed later, so we malloc() the return string each call
 char *ProcOnCTCP(BN_PInfo I,const char Who[],const char Whom[],const char Type[]) {
   char  tempnick[4096];
   char  temphost[4096];

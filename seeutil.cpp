@@ -175,14 +175,14 @@ int fReadStringLine(IN FILE *f, OUT wstring &str) {
 	}
   }
   
-  // convert from UTF8 to wchar_t
+  // convert from UTF8 to UCS-2
   retval = utf8_mbstowcs(NULL, s, 0);
   if (retval < 0) {
 	safe_free(s);
 	return false;
   }
-  wcstr = (wchar_t*)malloc((retval+1)*sizeof(wchar_t));
-  retval = utf8_mbstowcs(wcstr, s, retval+1);
+  wcstr = (wchar_t*)malloc(retval*2+2);
+  retval = utf8_mbstowcs(wcstr, s, strlen(s)+1);
   if (retval < 0) {
 	safe_free (wcstr);
 	safe_free (s);
