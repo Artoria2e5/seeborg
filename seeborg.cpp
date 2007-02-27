@@ -127,7 +127,7 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 	done = false;
 	while (!done) {
 		if (words.find(sentence.back()) == words.end()) {
-			printf ("%s:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
+			see_printstring(stderr, "%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
 		}
 
 		vector<wstring> linewords;
@@ -160,7 +160,7 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 	done = false;
 	while (!done) {
 		if (words.find(sentence.back()) == words.end()) {
-			printf ("%s:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
+			see_printstring(stderr, "%hs:%i: Shouldn't happen - words.find(sentence.back()) == words.end()\n", __FILE__, __LINE__);
 		}
 		
 		vector<wstring> linewords;
@@ -299,9 +299,9 @@ wstring CMD_Known_f(class SeeBorg* self, wstring command) {
 	wchar_t retstr[4096];
 	if (wit != self->words.end()) {
 		int wordcontexts = ((*wit).second).size();
-		snwprintf (retstr, 4096, L"\"%s\" is known (known as \"%s\", %i contexts)", tokenizer_argv(self->tokenizer, 1), curword.c_str(), wordcontexts);
+		snwprintf (retstr, 4096, L"\"%ls\" is known (known as \"%ls\", %i contexts)", tokenizer_argv(self->tokenizer, 1), curword.c_str(), wordcontexts);
 	} else {
-		snwprintf (retstr, 4096, L"%s is unknown, (was looking for \"%s\")", tokenizer_argv(self->tokenizer, 1), curword.c_str());
+		snwprintf (retstr, 4096, L"%ls is unknown, (was looking for \"%ls\")", tokenizer_argv(self->tokenizer, 1), curword.c_str());
 	}
 	retstr[4095] = L'\0';
 	

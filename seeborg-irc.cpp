@@ -211,7 +211,7 @@ void checkOwners(const char who[]) {
 	if (botsettings.owners[i].hostname.empty()) {
 	  if (!wcscasecmp(nicknamewc.c_str(), botsettings.owners[i].nickname.c_str())) {
 		botsettings.owners[i].hostname = hostnamewc;
-		see_printstring(stdout, L"Locked owner '%s' to '%s'\n", nicknamewc.c_str(), hostnamewc.c_str());
+		see_printstring(stdout, L"Locked owner '%ls' to '%ls'\n", nicknamewc.c_str(), hostnamewc.c_str());
 		return;
 	  }
 	}
@@ -323,15 +323,15 @@ wstring ProcessMessage(BN_PInfo I, const char who[], const wstring &msg, bool re
 // BotNet callback functions
 // ---------------------------------------------------------------------------
 void ProcOnError(BN_PInfo I, int errnum) {
-  perror("Error from botnet");
-//  see_printstring(stderr, "%S");
+  see_printstring(stderr, L"Error from botnet: %i\n", errnum);
+//  perror("Error from botnet");
 }
 void ProcOnConnected(BN_PInfo I, const char HostName[]) {
   char* utf8nickname = utf8_wstringtombs(botsettings.nickname);
   char* utf8username = utf8_wstringtombs(botsettings.username);
   char* utf8realname = utf8_wstringtombs(botsettings.realname);
 
-  see_printstring(stdout, L"Connected to %S...\n", HostName);
+  see_printstring(stdout, L"Connected to %hs...\n", HostName);
   BN_EnableFloodProtection(I, 1000, 1000, 60);
   connected = true;
   BN_Register(I, utf8nickname, utf8username, utf8realname);
@@ -347,7 +347,7 @@ void ProcOnRegistered(BN_PInfo I) {
   vector<wstring>::iterator it = botsettings.channels.begin();
   for (; it != botsettings.channels.end(); ++it) {
 	char* utf8channel = utf8_wstringtombs(*it);
-	see_printstring(stdout, L"Joining %s...\n", (*it).c_str());
+	see_printstring(stdout, L"Joining %ls...\n", (*it).c_str());
 	BN_SendJoinMessage (I, utf8channel, NULL);
 	safe_free(utf8channel);
   }
@@ -368,7 +368,7 @@ void ProcOnInvite(BN_PInfo I,const char Chan[],const char Who[],const char Whom[
   utf8_mbstowstring(tempnick, nickname);
   utf8_mbstowstring(Chan, channel);
 
-  see_printstring(stdout, L"Received invitation to %s by %s\n", channel.c_str(), nickname.c_str());
+  see_printstring(stdout, L"Received invitation to %ls by %ls\n", channel.c_str(), nickname.c_str());
 
   bool isowner = isOwner(Who);
   if (botsettings.joininvites == 0) return;
@@ -385,7 +385,7 @@ void ProcOnKick(BN_PInfo I, const char Chan[], const char Who[], const char Whom
   utf8_mbstowstring(Chan, channel);
   utf8_mbstowstring(Whom, whom);
   utf8_mbstowstring(Msg, message);
-  see_printstring(stdout, L"(%s) * %s has been kicked from %s by %s [%s]\n", 
+  see_printstring(stdout, L"(%ls) * %ls has been kicked from %ls by %ls [%ls]\n", 
 	channel.c_str(), whom.c_str(), channel.c_str(), nickname.c_str(), message.c_str());
   
   if (strstr(Whom, I->Nick) != NULL) {
@@ -402,7 +402,7 @@ void ProcOnPrivateTalk(BN_PInfo I, const char Who[], const char Whom[], const ch
   utf8_mbstowstring(tempnick, nickname);
   utf8_mbstowstring(Whom, whom);
   utf8_mbstowstring(Msg, message);
-  see_printstring(stdout, L"%s: %s\n", nickname.c_str(), message.c_str());
+  see_printstring(stdout, L"%ls: %ls\n", nickname.c_str(), message.c_str());
 
   wstring reply = ProcessMessage(I, Who, message, true);
 
@@ -411,7 +411,7 @@ void ProcOnPrivateTalk(BN_PInfo I, const char Who[], const char Whom[], const ch
 	splitString(reply, curlines, L"\n");
 	for (size_t i = 0, sz = curlines.size(); i < sz; i++) {
 	  char* utf8line = utf8_wstringtombs(curlines[i]);
-	  see_printstring(stdout, L"%s -> %s: %s\n", whom.c_str(), nickname.c_str(), curlines[i].c_str());
+	  see_printstring(stdout, L"%ls -> %ls: %ls\n", whom.c_str(), nickname.c_str(), curlines[i].c_str());
 	  BN_SendPrivateMessage(I, tempnick, utf8line);
 	  safe_free (utf8line);
 	}
@@ -427,7 +427,7 @@ void ProcOnChannelTalk(BN_PInfo I,const char Chan[],const char Who[],const char 
   utf8_mbstowstring(Chan, channel);
   utf8_mbstowstring(Msg, message);
 
-  see_printstring(stdout, L"(%s) <%s> %s\n", channel.c_str(), nickname.c_str(), message.c_str());
+  see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), nickname.c_str(), message.c_str());
   
   // Process incoming message, acquire reply
   wstring reply = ProcessMessage(I, Who, message);
@@ -451,7 +451,7 @@ void ProcOnChannelTalk(BN_PInfo I,const char Chan[],const char Who[],const char 
 	  
 	  if (!beginswithnickname) {
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%s) <%s> %s\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
 		BN_SendChannelMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  } else {
@@ -461,7 +461,7 @@ void ProcOnChannelTalk(BN_PInfo I,const char Chan[],const char Who[],const char 
 		curlines[i] = joinString(words);
 		trimString(curlines[i], false);
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%s) * %s %s\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		see_printstring(stdout, L"(%ls) * %ls %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
 		BN_SendActionMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  }
@@ -477,7 +477,7 @@ void ProcOnAction(BN_PInfo I,const char Chan[],const char Who[],const char Msg[]
   utf8_mbstowstring(tempnick, nickname);
   utf8_mbstowstring(Chan, channel);
   utf8_mbstowstring(Msg, action);
-  see_printstring(stdout, L"(%s) * %s %s\n", channel.c_str(), nickname.c_str(), action.c_str());
+  see_printstring(stdout, L"(%ls) * %ls %ls\n", channel.c_str(), nickname.c_str(), action.c_str());
 
   wstring message = nickname;
   message += L" ";
@@ -503,7 +503,7 @@ void ProcOnAction(BN_PInfo I,const char Chan[],const char Who[],const char Msg[]
 	  
 	  if (!beginswithnickname) {
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%s) <%s> %s\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
 		BN_SendChannelMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  } else {
@@ -513,7 +513,7 @@ void ProcOnAction(BN_PInfo I,const char Chan[],const char Who[],const char Msg[]
 		curlines[i] = joinString(words);
 		trimString(curlines[i], false);
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%s) * %s %s\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		see_printstring(stdout, L"(%ls) * %ls %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
 		BN_SendActionMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  }
@@ -536,7 +536,7 @@ void ProcOnJoin (BN_PInfo I, const char Chan[],const char Who[]) {
   utf8_mbstowstring(tempuser, username);
   utf8_mbstowstring(Chan, channel);
   
-  see_printstring(stdout, L"(%s) %s (%s@%s) has joined the channel\n", 
+  see_printstring(stdout, L"(%ls) %ls (%ls@%ls) has joined the channel\n", 
 	channel.c_str(), nickname.c_str(), username.c_str(), hostname.c_str());
   
   wstring reply = ProcessMessage(I, Who, nickname);
@@ -547,7 +547,7 @@ void ProcOnJoin (BN_PInfo I, const char Chan[],const char Who[]) {
 	utf8_mbstowstring(I->Nick, mynick);
 	for (size_t i = 0, sz = curlines.size(); i < sz; i++) {
 	  char* utf8line = utf8_wstringtombs(curlines[i]);
-	  see_printstring(stdout, L"(%s) %s: %s\n", 
+	  see_printstring(stdout, L"(%ls) %ls: %ls\n", 
 		channel.c_str(), mynick.c_str(), curlines[i].c_str());
 	  BN_SendChannelMessage(I, Chan, utf8line);
 	  safe_free(utf8line);
@@ -571,7 +571,7 @@ void ProcOnPart (BN_PInfo I, const char Chan[],const char Who[], const char Msg[
   utf8_mbstowstring(Chan, channel);
   utf8_mbstowstring(Msg, message);
   
-  see_printstring(stdout, L"(%s) %s (%s@%s) has left the channel (%s)\n", 
+  see_printstring(stdout, L"(%ls) %ls (%ls@%ls) has left the channel (%ls)\n", 
 	channel.c_str(), nickname.c_str(), username.c_str(), hostname.c_str(), message.c_str());
 
   wstring reply = ProcessMessage(I, Who, nickname);
@@ -582,7 +582,7 @@ void ProcOnPart (BN_PInfo I, const char Chan[],const char Who[], const char Msg[
 	utf8_mbstowstring(I->Nick, mynick);
 	for (size_t i = 0, sz = curlines.size(); i < sz; i++) {
 	  char* utf8line = utf8_wstringtombs(curlines[i]);
-	  see_printstring (stdout, L"(%s) %s: %s\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+	  see_printstring (stdout, L"(%ls) %ls: %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
 	  BN_SendChannelMessage(I, Chan, utf8line);
 	  safe_free(utf8line);
 	}
@@ -604,11 +604,11 @@ void ProcOnQuit (BN_PInfo I, const char Who[],const char Msg[]) {
   utf8_mbstowstring(tempuser, username);
   utf8_mbstowstring(Msg, message);
   
-  see_printstring(stdout, L"%s (%s@%s) has quit IRC (%s)\n", 
+  see_printstring(stdout, L"%ls (%ls@%ls) has quit IRC (%ls)\n", 
 	nickname.c_str(), username.c_str(), hostname.c_str(), message.c_str());
 }
 
-// returned string is freed later, so we malloc() the return string each call
+// returned string is freed later by BotNet, so we malloc() the return string each call
 char *ProcOnCTCP(BN_PInfo I,const char Who[],const char Whom[],const char Type[]) {
   char  tempnick[4096];
   char  temphost[4096];
@@ -623,7 +623,7 @@ char *ProcOnCTCP(BN_PInfo I,const char Who[],const char Whom[],const char Type[]
   utf8_mbstowstring(tempuser, username);
   utf8_mbstowstring(Whom, whom);
   utf8_mbstowstring(Type, type);
-  see_printstring(stdout, L"CTCP %s query by %s for %s\n", type.c_str(), nickname.c_str(), whom.c_str());
+  see_printstring(stdout, L"CTCP %ls query by %ls for %ls\n", type.c_str(), nickname.c_str(), whom.c_str());
 
   wstring replystring;
   if (!strcasecmp(Type, "VERSION")) {
@@ -687,7 +687,7 @@ wstring CMD_Join_f (class SeeBorg* self, const wstring command) {
 	wstring channel = tokenizer_argv(botsettings.tokenizer, i);
 	char* utf8channel = utf8_wstringtombs(channel);
 
-	see_printstring(stdout, L"Joining %s...\n", channel.c_str());
+	see_printstring(stdout, L"Joining %ls...\n", channel.c_str());
 	BN_SendJoinMessage (&Info, utf8channel, NULL);
 	botsettings.channels.push_back(channel);
 
@@ -706,7 +706,7 @@ wstring CMD_Part_f (class SeeBorg* self, const wstring command) {
 	wstring channel = tokenizer_argv(botsettings.tokenizer, i);
 	char* utf8channel = utf8_wstringtombs(channel);
 
-	see_printstring(stdout, L"Leaving %s...\n", channel.c_str());
+	see_printstring(stdout, L"Leaving %ls...\n", channel.c_str());
 	BN_SendPartMessage (&Info, utf8channel, NULL);
 	
 	vector<wstring>::iterator it = botsettings.channels.begin();
@@ -853,7 +853,7 @@ int main (int argc, char* argv[]) {
   setlocale(LC_ALL, "");
   
   see_printstring(stdout, L"SeeBorg v" SEEBORGVERSIONWSTRING L", copyright (C) 2003 Eugene Bujak.\n"
-	L"Uses botnet v%S\n", BN_GetVersion());
+	L"Uses botnet v%hs\n", BN_GetVersion());
   
   LoadBotSettings();
   if (argc < 2) {

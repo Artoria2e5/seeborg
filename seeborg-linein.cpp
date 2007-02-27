@@ -59,7 +59,7 @@ int main (int argc, char* argv[]) {
 	FilterMessage(body);
 	if (!wcsncasecmp(body.c_str(), L"!exit", 5)) break;
 	wstring seeout = gSeeBorg.Reply(body);
-	see_printstring (stdout, L"<SeeBorg> %s\n", seeout.c_str());
+	see_printstring (stdout, L"<SeeBorg> %ls\n", seeout.c_str());
 	gSeeBorg.Learn(body);
   }
 #endif

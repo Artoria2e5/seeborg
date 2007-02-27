@@ -21,10 +21,6 @@
 #ifndef __SEEBORG_REQUIRED_H__
 #define __SEEBORG_REQUIRED_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef _MSC_VER
 #pragma warning (disable: 4786)
 #pragma warning (disable: 4503)
@@ -38,8 +34,8 @@ extern "C" {
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <wchar.h>
 #include <wctype.h>
+#include <wchar.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -66,7 +62,6 @@ typedef unsigned __int64 uint64_t;
 #include <inttypes.h>
 #endif
 
-
 #define SEEBORGVERSIONMAJOR 0
 #define SEEBORGVERSIONMINOR 52
 #define SEEBORGVERSIONWSTRING L"0.52 beta"
@@ -78,6 +73,10 @@ typedef unsigned __int64 uint64_t;
 
 #ifndef OUT
 #define OUT
+#endif
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 inline void safe_free(void* ptr) {
