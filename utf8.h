@@ -50,9 +50,9 @@ int utf8_wctomb(char *s, wint_t wc1);
  *
  * Recommended usage:
  * retval = utf8_mbstowcs(NULL, mbstr, 0);
- * wcstr = (wchar_t*)malloc(retval*2+2);
+ * wcstr = (wchar_t*)malloc((retval+1)*sizeof(wchar_t));
  * retval = utf8_mbstowcs(wcstr, mbstr, strlen(mbstr) + 1);
- * fwrite(wcstr, 1, retval*2+2, f);
+ * fwrite(wcstr, 1, (retval+1)*sizeof(wchar_t), f);
  * free(wcstr);
  */
 size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count);
