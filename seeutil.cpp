@@ -25,8 +25,8 @@
 
 // ================
 // String functions
-// ================
-size_t splitString(IN const wstring &str, OUT vector<wstring> &tokens, IN const wchar_t* needle) {
+
+size_t splitString(IN const wstring &str, IN OUT vector<wstring> &tokens, IN const wchar_t* needle) {
   // TODO: undefined behaviour when input string contains only needles,
   //       but should return zero.
   vector<size_t> splitpos;
@@ -46,6 +46,10 @@ size_t splitString(IN const wstring &str, OUT vector<wstring> &tokens, IN const 
   size_t sz = splitpos.size();
   for (size_t i = 0; i < sz; i++) {
 	nend = splitpos[i];
+	if (nend == nstart) {
+	  nstart = nend+wcslen(needle);
+	  continue;
+	}
 	if (nend == str.npos) {
 	  tokens.push_back(str.substr(nstart));
 	} else {
@@ -114,6 +118,10 @@ int trimString(wstring &str, bool punct) {
 // ---
 int FilterMessage(wstring &message) {
   int n;	// MSVC doesn't like 'for' locality
+  for (n = message.find(L'\t'); n != message.npos; n = message.find(L'\t', n)) {
+	message.replace(n, 1, 1, L' ');
+  }
+
   for (n = message.find(L'\n'); n != message.npos; n = message.find(L'\n', n)) {
 	message.erase(n, 1);
   }

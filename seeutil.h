@@ -31,6 +31,10 @@
 
 
 // String functions
+
+// splitString - split a string from str to tokens, using needle.
+//               by default, needle is whitespace.
+//               if tokens argument contains data, new data will be appended.
 size_t splitString(IN const wstring &str, OUT vector<wstring> &tokens, IN const wchar_t* needle = L" ");
 OUT wstring joinString(IN vector<wstring> &tokens, wstring separator = L" ");
 int lowerString(IN OUT wstring &str);
@@ -43,10 +47,12 @@ int fReadStringLine(IN FILE *f, OUT wstring &outstr);
 
 // Other helpful functions
 inline int randInt(const int min, const int max) {
+  if (max < min) return min;
   return (rand() % (max - min + 1)) + min;
 }
 
 inline float randFloat(const float min, const float max) {
+  if (max < min) return min;
   float retval = (float)rand()/(float)RAND_MAX;
   retval *= (max - min);
   retval += min;
