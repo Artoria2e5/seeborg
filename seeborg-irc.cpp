@@ -298,7 +298,7 @@ wstring ProcessMessage(BN_PInfo I, const char who[], const wstring &msg, bool re
   if (message[0] == L'[') return L"";
 
   if (botsettings.speaking) {
-	replying = checkReplying(NULL, botsettings.replyrate, message);
+	if (!replying) replying = checkReplying(NULL, botsettings.replyrate, message);
 	if (!replying) replying = checkReplying(&botsettings.magicwords, botsettings.replyrate_magic, message);
 	if (!replying) {
 	  vector<wstring> nicknames = botsettings.botakas;
@@ -448,6 +448,7 @@ void ProcOnChannelTalk(BN_PInfo I,const char Chan[],const char Who[],const char 
 		}
 	  }
 	  
+	  // TODO: what a mess, clean it up!
 	  if (!beginswithnickname) {
 		char* utf8line = utf8_wstringtombs(curlines[i]);
 		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
@@ -456,12 +457,13 @@ void ProcOnChannelTalk(BN_PInfo I,const char Chan[],const char Who[],const char 
 	  } else {
 		vector<wstring> words;
 		splitString(curlines[i], words);
-		words[0] = L"";
+		words[0] = nickname;
+		lowerString(words[0]);
 		curlines[i] = joinString(words);
 		trimString(curlines[i], false);
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%ls) * %ls %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
-		BN_SendActionMessage(I, Chan, utf8line);
+		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		BN_SendChannelMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  }
 	}
@@ -500,6 +502,7 @@ void ProcOnAction(BN_PInfo I,const char Chan[],const char Who[],const char Msg[]
 		}
 	  }
 	  
+	  // TODO: what a mess, clean it up!
 	  if (!beginswithnickname) {
 		char* utf8line = utf8_wstringtombs(curlines[i]);
 		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
@@ -508,12 +511,13 @@ void ProcOnAction(BN_PInfo I,const char Chan[],const char Who[],const char Msg[]
 	  } else {
 		vector<wstring> words;
 		splitString(curlines[i], words);
-		words[0] = L"";
+		words[0] = nickname;
+		lowerString(words[0]);
 		curlines[i] = joinString(words);
 		trimString(curlines[i], false);
 		char* utf8line = utf8_wstringtombs(curlines[i]);
-		see_printstring(stdout, L"(%ls) * %ls %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
-		BN_SendActionMessage(I, Chan, utf8line);
+		see_printstring(stdout, L"(%ls) <%ls> %ls\n", channel.c_str(), mynick.c_str(), curlines[i].c_str());
+		BN_SendChannelMessage(I, Chan, utf8line);
 		safe_free (utf8line);
 	  }
 	}
