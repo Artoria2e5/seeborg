@@ -26,7 +26,9 @@
 #pragma warning (disable: 4503)
 #pragma warning (disable: 4786)
 #pragma warning (disable: 4100)
-//#pragma warning (disable: 4514)
+#pragma warning (disable: 4702)
+#pragma warning (disable: 4710)
+#pragma warning (disable: 4127)
 #define inline __inline
 #endif
 
