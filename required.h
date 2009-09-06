@@ -64,6 +64,40 @@ typedef unsigned __int64 uint64_t;
 #include <inttypes.h>
 #endif
 
+#if defined(__GNUC__) && (__GNUC__ >= 3)
+# define likely(x)    (__builtin_expect((x), 1))
+# define unlikely(x)  (__builtin_expect((x), 0))
+#else
+# define likely(x) (x)
+# define unlikely(x) (x)
+#endif
+
+#if defined __GNUC__ && __GNUC__ >= 4 && !defined _WIN32 && !defined __CYGWIN__
+# define VIS_PUBLIC __attribute__ ((visibility("default")))
+# define VIS_LOCAL  __attribute__ ((visibility("hidden")))
+#elif (defined _WIN32 || defined __CYGWIN__)
+# ifdef BUILDING_DLL
+#  define VIS_PUBLIC __declspec(dllexport) // Note: actually gcc seems to also supports this syntax.
+# else
+#  define VIS_PUBLIC __declspec(dllimport) // Note: actually gcc seems to also supports this syntax.
+# endif
+# define VIS_LOCAL
+#else
+# define VIS_PUBLIC
+# define VIS_LOCAL
+#endif
+
+#if defined __GNUC__ && __GNUC__ >= 2 && __GNUC_MINOR__ >= 7
+#  define UNUSED(var) var __attribute__((unused))
+#else
+#  if defined(__cplusplus)
+#    define UNUSED(var)
+#  else
+#    define UNUSED(var) var
+#  endif
+#endif
+
+
 #define SEEBORGVERSIONMAJOR 0
 #define SEEBORGVERSIONMINOR 52
 #define SEEBORGVERSIONWSTRING L"0.52 beta"
