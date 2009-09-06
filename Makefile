@@ -14,14 +14,15 @@ FNAMELINEIN = seeborg-linein
 ## If you're getting link errors on any unix, try uncommeting this line below
 CFUSER = -pthread
 
-CFCPU = -march=pentium
-CFOPT = -O3 -fomit-frame-pointer -fforce-addr -finline -funroll-loops -fexpensive-optimizations
+#CFCPU = -march=native
+CFOPT = -O2 -finline -funroll-loops
 
-#CFDEBUG = -g3
+CFDEBUG = -ggdb3
 #CFDEBUG += -pg
 #CFDEBUG += -DPROFILE
 
 #CFDEBUG += -Wall
+#CFDEBUG += -Wextra
 
 #LDFLAGS = -s
 

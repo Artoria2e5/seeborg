@@ -32,6 +32,7 @@
 #include <signal.h>
 #include <locale.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "seeborg.h"
 #include "seeborg-irc.h"

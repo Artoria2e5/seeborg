@@ -81,13 +81,10 @@ typedef unsigned __int64 uint64_t;
 extern "C" {
 #endif
 
-inline void safe_free(void* ptr) {
-  if (ptr == NULL) return;
-  free(ptr);
-}
+#undef safe_free
+#define safe_free(ptr) {if (ptr) free(ptr); ptr = NULL;}
 
-
-inline wchar_t* wva(wchar_t* format, ...) {
+static inline wchar_t* wva(const wchar_t* format, ...) {
 	static wchar_t str[4][16384];
 	static int	index = 0;
 
@@ -107,7 +104,7 @@ inline wchar_t* wva(wchar_t* format, ...) {
 
 // Use to print wide-character string into console, only stdout and stderr are
 // accepted. If you provide anything else besides that, it'll default to stdout.
-inline void see_printstring(FILE *f, wchar_t* format, ...) {
+static inline void see_printstring(FILE *f, const wchar_t* format, ...) {
 #ifdef _WIN32
   HANDLE outhandle;
   DWORD numwritten = 0;
