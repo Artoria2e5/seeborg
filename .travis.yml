@@ -1,0 +1,16 @@
+language: cpp
+sudo: false
+
+compiler:
+  - gcc
+
+env:
+  global:
+    - CCACHE_COMPRESS=1
+
+cache:
+  apt: true
+  ccache: true
+
+script:
+  - make
