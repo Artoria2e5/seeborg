@@ -55,7 +55,7 @@ int utf8_wctomb(char *s, wint_t wc1);
  * fwrite(wcstr, 1, (retval+1)*sizeof(wchar_t), f);
  * free(wcstr);
  */
-size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count);
+ssize_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count);
 
 /*
  * UTF-8 equivalent of the C library's wcstombs().
@@ -67,7 +67,7 @@ size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count);
  * fwrite(mbstr, 1, retval+1, f);
  * free(mbstr);
  */
-size_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count);
+ssize_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count);
 
 
 /*

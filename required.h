@@ -142,13 +142,16 @@ static inline void see_printstring(FILE *f, const wchar_t* format, ...) {
 #ifdef _WIN32
   HANDLE outhandle;
   DWORD numwritten = 0;
+  int retval;
 #endif
   wchar_t outbuf[16384];
-  int retval;
 
   va_list argptr;
-  va_start (argptr, format);
-  retval = vsnwprintf (outbuf, 16384, format, argptr);
+  va_start(argptr, format);
+#ifdef _WIN32
+  retval = 
+#endif
+  vsnwprintf(outbuf, 16384, format, argptr);
   va_end(argptr);
 #ifdef _WIN32
   outbuf[16383] = L'\0';

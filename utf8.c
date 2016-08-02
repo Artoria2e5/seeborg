@@ -142,7 +142,7 @@ int utf8_wctomb(char *s, wint_t wc1)
 /*
 ** UTF-8 equivalent of the C library's mbstowcs().
 */
-size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
+ssize_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
   unsigned int i;
   unsigned int mbsize = 0;
   unsigned int wclen  = 0;
@@ -156,7 +156,7 @@ size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
 	  if (*(mbstr + mbsize) == 0) break;
 	  retval = utf8_mbtowc(NULL, mbstr + mbsize, 6);
 	  if (retval == 0) break;
-	  if (retval < 0) return (size_t)-1;
+	  if (retval < 0) return -1;
 	  
 	  wclen++; mbsize += retval;
 	}
@@ -170,9 +170,9 @@ size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
 	  break;
 	}
 	
-	retval = utf8_mbtowc((int*)(wcstr + i), mbstr+mbsize, 6);
+	retval = utf8_mbtowc((unsigned int*)(wcstr + i), mbstr+mbsize, 6);
 	if (retval == 0) break;
-	if (retval < 0) return (size_t)-1;
+	if (retval < 0) return -1;
 	
 	wclen++; mbsize += retval;
   }
@@ -183,7 +183,7 @@ size_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
 /*
 ** UTF-8 equivalent of the C library's wcstombs().
 */
-size_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
+ssize_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
   size_t i, j, mbsize = 0;
   int retval = 0;
   char tempmb[6];
@@ -196,7 +196,7 @@ size_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
 	  if (wcstr[i] == L'\0') break;
 	  retval = utf8_wctomb(tempmb, wcstr[i]);
 	  if (retval == 0) break;
-	  if (retval < 0) return (size_t)-1;
+	  if (retval < 0) return -1;
 	  mbsize += retval;
 	}
 	return mbsize;
@@ -209,7 +209,7 @@ size_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
 	}
 	retval = utf8_wctomb(tempmb, wcstr[i]);
 	if (retval == 0) break;
-	if (retval < 0) return (size_t)-1;
+	if (retval < 0) return -1;
 	
 	if (mbsize+retval <= count) {
 	  // There's enough room for another mbchar
@@ -244,7 +244,7 @@ utf8writer_t* utf8writer_init(void) {
 int utf8writer_write(IN OUT utf8writer_t *utf8writer, IN FILE* f, 
 					 IN const wchar_t* wcstr, IN const char* format) 
 {
-  size_t retval;
+  ssize_t retval;
   
   if (utf8writer == NULL) return 0;
   if (utf8writer->utf8str == NULL) return 0;

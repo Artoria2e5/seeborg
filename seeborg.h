@@ -103,7 +103,7 @@ static botcommand_t botcmds[] = {
 
   {NULL, NULL, NULL}
 };
-static int numbotcmds = sizeof(botcmds) / sizeof(botcmds[0]) - 1;
+static const int numbotcmds = sizeof(botcmds) / sizeof(botcmds[0]) - 1;
 
 // ---------------------------------------------------------------------------
 

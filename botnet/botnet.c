@@ -124,7 +124,6 @@ struct BN_threadspecific *BN_getthreadspecific(void)
 
 bool BN_Connect(BN_PInfo I,const char *Server,const int Port,const int Flags)
 {
-  int ret;
   void* retptr = NULL;
 #ifdef _WIN32
   DWORD son;

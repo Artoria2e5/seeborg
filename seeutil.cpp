@@ -23,6 +23,8 @@
 
 #include "seeutil.h"
 
+static const wchar_t *tokenizer_nullstring = L"";
+
 // ================
 // String functions
 
@@ -117,7 +119,7 @@ int trimString(wstring &str, bool punct) {
 // Filter message before tokenising and other parsing
 // ---
 int FilterMessage(wstring &message) {
-  int n;	// MSVC doesn't like 'for' locality
+  size_t n;	// MSVC doesn't like 'for' locality
   for (n = message.find(L'\t'); n != message.npos; n = message.find(L'\t', n)) {
 	message.replace(n, 1, 1, L' ');
   }
@@ -297,7 +299,7 @@ void tokenizer_free(tokenizer_t* tokenizer) {
 // utf8/wstring handling routines
 // ==============================
 bool utf8_mbstowstring(const char *mbstr, wstring &wstr) {
-  size_t retval = utf8_mbstowcs(NULL, mbstr, 0);
+  ssize_t retval = utf8_mbstowcs(NULL, mbstr, 0);
   if (retval == -1) return false;
 
   wchar_t *tempwcstr = (wchar_t*)malloc(sizeof(wchar_t)*(retval+1));

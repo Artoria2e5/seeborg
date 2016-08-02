@@ -1,4 +1,4 @@
-CFLAGS = -O2 -g
+CFLAGS = -O2 -g -Wall
 CXXFLAGS = $(CFLAGS)
 
 TARGET_IRC=seeborg-irc

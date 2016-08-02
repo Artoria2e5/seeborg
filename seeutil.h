@@ -64,7 +64,6 @@ typedef struct tokenizer_s {
 	size_t argc;
 	wchar_t **argv;
 } tokenizer_t;
-static const wchar_t *tokenizer_nullstring = L"";
 static const size_t tokenizer_sizestep = 256;
 
 // always call this first
