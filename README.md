@@ -43,8 +43,3 @@ Configuration
 | magicwords     |                | Space separated list of words that bot replies to, useful if bot has alternative nicknames
 | owners         |                | Space separated bot owners' nickname list, the owner's hostname will be locked after each bot restart.
 
-
-Portability
---------------
-If compiling under mingw32 and cygwin, you would want to uncomment `LDFLAGS` line (one with `-lwsock32`) in the Makefile.
-
