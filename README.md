@@ -26,7 +26,7 @@ Without any parameters, `seeborg-irc` reads configuration settings from `seeborg
 Configuration
 -------------
 |Command |Default value | Description |
-|-
+|--------|--------------|-------------|
 | server         |                | IRC server to connect to
 | serverport     | 6667           | port of the IRC server to connect to
 | nickname       | "SeeBorg"      | IRC nickname
