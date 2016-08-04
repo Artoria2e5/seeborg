@@ -588,7 +588,7 @@ void BN_CTCPFonction(BN_PInfo I,BN_PMessage Msg)
   char Nick[BN_NICKLENGTH];
   char *p;
   char Ctcp[50];
-  int len;
+  size_t len;
 
   p = strchr(Msg->Params[1]+1,' ');
   if(p == NULL)

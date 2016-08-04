@@ -99,25 +99,25 @@ int utf8_wctomb(char *s, wint_t wc1)
     *s++ = (char)wc;
     return 1;
   }
-  else if (wc < (1 << 11)) {
+  else if (wc < (1u << 11)) {
     *s++ = 0xc0 | (wc >> 6);
     *s++ = 0x80 | (wc & 0x3f);
     return 2;
   }
-  else if (wc < (1 << 16)) {
+  else if (wc < (1u << 16)) {
     *s++ = 0xe0 | (wc >> 12);
     *s++ = 0x80 | ((wc >> 6) & 0x3f);
     *s++ = 0x80 | (wc & 0x3f);
     return 3;
   }
-  else if (wc < (1 << 21)) {
+  else if (wc < (1u << 21)) {
     *s++ = 0xf0 | (wc >> 18);
     *s++ = 0x80 | ((wc >> 12) & 0x3f);
     *s++ = 0x80 | ((wc >> 6) & 0x3f);
     *s++ = 0x80 | (wc & 0x3f);
     return 4;
   }
-  else if (wc < (1 << 26)) {
+  else if (wc < (1u << 26)) {
     *s++ = 0xf8 | (wc >> 24);
     *s++ = 0x80 | ((wc >> 18) & 0x3f);
     *s++ = 0x80 | ((wc >> 12) & 0x3f);
@@ -125,7 +125,7 @@ int utf8_wctomb(char *s, wint_t wc1)
     *s++ = 0x80 | (wc & 0x3f);
     return 5;
   }
-  else if (wc < (1 << 31)) {
+  else if (wc < (1u << 31)) {
     *s++ = 0xfc | (wc >> 30);
     *s++ = 0x80 | ((wc >> 24) & 0x3f);
     *s++ = 0x80 | ((wc >> 18) & 0x3f);
@@ -184,7 +184,7 @@ ssize_t utf8_mbstowcs(wchar_t *wcstr, const char *mbstr, size_t count) {
 ** UTF-8 equivalent of the C library's wcstombs().
 */
 ssize_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
-  size_t i, j, mbsize = 0;
+  size_t i, mbsize = 0;
   int retval = 0;
   char tempmb[6];
   
@@ -213,7 +213,7 @@ ssize_t utf8_wcstombs(char *mbstr, const wchar_t *wcstr, size_t count) {
 	
 	if (mbsize+retval <= count) {
 	  // There's enough room for another mbchar
-	  for (j = 0; j < retval; j++) *(mbstr+mbsize+j) = tempmb[j];
+	  for (int j = 0; j < retval; j++) *(mbstr+mbsize+j) = tempmb[j];
 	  mbsize += retval;
 	} else break;
   }

@@ -336,7 +336,6 @@ void BN_CreateDCCSendProcess(BN_PInfo I,BN_PSend Send,const int TimeOut)
 {
   char *S;
   int sock;
-  socklen_t len;
   FILE *File;
   int res;
   unsigned int sent;
@@ -360,8 +359,8 @@ void BN_CreateDCCSendProcess(BN_PInfo I,BN_PSend Send,const int TimeOut)
     else
       EXIT_THREAD_FUNC 1);
   }
-  len = sizeof(Send->SAddr);
-  sock = accept(Send->Socket,(struct sockaddr *)&Send->SAddr,&len);
+  socklen_t socklen = sizeof(Send->SAddr);
+  sock = accept(Send->Socket,(struct sockaddr *)&Send->SAddr,&socklen);
   if(sock == -1)
   {
     printf("Error accept\n");
@@ -387,7 +386,7 @@ void BN_CreateDCCSendProcess(BN_PInfo I,BN_PSend Send,const int TimeOut)
     sent = 0;
     while(sent < Send->Length)
     {
-      len = fread(Buffer,1,DCC_PACKETSIZE,File);
+      int len = fread(Buffer,1,DCC_PACKETSIZE,File);
       FD_ZERO(&rfds);
       FD_SET(Send->Socket,&rfds);
       tv.tv_sec = BN_TIMEOUT_TRANSFER;

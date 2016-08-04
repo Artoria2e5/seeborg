@@ -1,4 +1,4 @@
-CFLAGS = -O2 -g -Wall
+CFLAGS = -O2 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
 CXXFLAGS = $(CFLAGS)
 
 TARGET_IRC=seeborg-irc
