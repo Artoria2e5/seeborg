@@ -1,5 +1,6 @@
 CFLAGS = -O2 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
-CXXFLAGS = $(CFLAGS)
+CXXFLAGS := $(CFLAGS)
+CFLAGS += -std=gnu99
 
 TARGET_IRC=seeborg-irc
 TARGET_LINEIN=seeborg-linein
