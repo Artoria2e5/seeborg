@@ -15,17 +15,17 @@ TARGET_IRC_HDRS+=botnet/botnet.h botnet/includes.h
 
 ## Linux 
 ifeq ($(shell uname), Linux)
-CFLAGS += -pthread
+LDFLAGS += -pthread
 endif
 
 ## FreeBSD 
 ifeq ($(shell uname), FreeBSD)
-CFLAGS += -pthread
+LDFLAGS += -pthread
 endif
 
 ## MacOSX 
 ifeq ($(shell uname), Darwin)
-CFLAGS += -pthread
+LDFLAGS += -pthread
 endif
 
 ## Windows (mingw) 
