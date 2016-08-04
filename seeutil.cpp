@@ -32,7 +32,7 @@ size_t splitString(IN const wstring &str, IN OUT vector<wstring> &tokens, IN con
   // TODO: undefined behaviour when input string contains only needles,
   //       but should return zero.
   vector<size_t> splitpos;
-  size_t nstart, nend, n;
+  size_t nstart, n;
 
   if (str.empty()) return 0;
 
@@ -44,10 +44,9 @@ size_t splitString(IN const wstring &str, IN OUT vector<wstring> &tokens, IN con
   splitpos.push_back(str.npos);
 
   nstart = 0;
-  nend = str.npos;
   size_t sz = splitpos.size();
   for (size_t i = 0; i < sz; i++) {
-	nend = splitpos[i];
+	size_t nend = splitpos[i];
 	if (nend == nstart) {
 	  nstart = nend+wcslen(needle);
 	  continue;

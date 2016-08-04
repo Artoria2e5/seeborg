@@ -247,9 +247,9 @@ void BN_SendJoinMessage(BN_PInfo I,const char *Channel,const char *Keys)
   buf[sizeof(buf)-1] = 0;
   if(Keys != NULL)
   {
-    strncat(buf," ",sizeof(buf)-1);
+    strncat(buf," ",sizeof(buf) - strlen(buf) - 1);
     buf[sizeof(buf)-1] = 0;
-    strncat(buf,Keys,sizeof(buf)-1);
+    strncat(buf,Keys,sizeof(buf) - strlen(buf) - 1);
     buf[sizeof(buf)-1] = 0;
   }
   BN_SendMessage(I,BN_MakeMessage(NULL,"JOIN",buf),BN_HIGH_PRIORITY);
@@ -263,9 +263,9 @@ void BN_SendPartMessage(BN_PInfo I,const char *Channel,const char *Reason)
   buf[sizeof(buf)-1] = 0;
   if(Reason != NULL)
   {
-    strncat(buf," :",sizeof(buf)-1);
+    strncat(buf," :",sizeof(buf) - strlen(buf) - 1);
     buf[sizeof(buf)-1] = 0;
-    strncat(buf,Reason,sizeof(buf)-1);
+    strncat(buf,Reason,sizeof(buf) - strlen(buf) - 1);
     buf[sizeof(buf)-1] = 0;
   }
   BN_SendMessage(I,BN_MakeMessage(NULL,"PART",buf),BN_HIGH_PRIORITY);

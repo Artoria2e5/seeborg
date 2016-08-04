@@ -257,10 +257,10 @@ int utf8writer_write(IN OUT utf8writer_t *utf8writer, IN FILE* f,
 	utf8writer->utf8strsize = retval+1;
   }
   
-  retval = utf8_wcstombs(utf8writer->utf8str, wcstr, retval+1);
+  utf8_wcstombs(utf8writer->utf8str, wcstr, retval+1);
   
-  if (format == NULL) fprintf (f, "%s", utf8writer->utf8str);
-  else fprintf (f, format, utf8writer->utf8str);
+  if (format == NULL) fprintf(f, "%s", utf8writer->utf8str);
+  else fprintf(f, format, utf8writer->utf8str);
   
   return 1;
 }

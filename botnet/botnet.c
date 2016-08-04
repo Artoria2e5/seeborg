@@ -287,7 +287,7 @@ BN_PMessage BN_WaitForData(BN_PInfo I)
       pos = NULL;
     else if((cr != NULL) && (lf != NULL))
     {
-      if(abs(cr-lf) != 1)
+      if(labs(cr-lf) != 1)
         ajout = 1;
       if(cr < lf)
         pos = cr;
@@ -478,7 +478,7 @@ BN_PMessage BN_WaitForData(BN_PInfo I)
 BN_PMessage BN_ParseMessage(const char *Message)
 {
   BN_PMessage Msg;
-  int Pos,i;
+  int i;
   char *buf;
 #ifdef NON_STANDARD
   char *p;
@@ -487,12 +487,11 @@ BN_PMessage BN_ParseMessage(const char *Message)
   Msg = (BN_PMessage)malloc(sizeof(BN_TMessage));
   for(i=0;i<MAX_PARAMS;i++)
     Msg->Params[i] = "";
-  Pos = 0;
 
   if(Message[0] == ':')
   {
     buf = strstr(Message," ");
-    Pos = buf - Message - 1;
+    int Pos = buf - Message - 1;
     Msg->Prefix = (char *)malloc(Pos+1);
 #ifdef MEMCPY_CHECK
     if((Pos > BN_BUFFERSIZE) || (Pos < 0))
@@ -513,7 +512,7 @@ BN_PMessage BN_ParseMessage(const char *Message)
     free(Msg);
     return NULL;
   }
-  Pos = buf - Message;
+  int Pos = buf - Message;
   Msg->Command = (char *)malloc(Pos+1);
 #ifdef MEMCPY_CHECK
   if((Pos > BN_BUFFERSIZE) || (Pos < 0))

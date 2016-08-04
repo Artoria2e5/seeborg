@@ -89,7 +89,10 @@ void BN_SendDCCChatRequest(BN_PInfo I,const char *Nick,const int Flags)
   if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
   {
     if(fork() != 0)
+    {
+      free(TS);
       return;
+    }
     ThreadProc_SendRequest(TS);
   }
   else
@@ -147,11 +150,16 @@ void *ThreadProc_SendRequest(void *Info)
   if(getsockname(I->Socket,(struct sockaddr *)&SockAddrIn,&size) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
-    free(Chat);
     if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Chat);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Chat);
       EXIT_THREAD_FUNC 1);
+    }
   }
 
   Adrs = ntohl(SockAddrIn.sin_addr.s_addr);
@@ -159,11 +167,16 @@ void *ThreadProc_SendRequest(void *Info)
   if(listen(Chat->Socket,0) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
-    free(Chat);
     if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Chat);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Chat);
       EXIT_THREAD_FUNC 1);
+    }
   }
 
   snprintf(Msg,sizeof(Msg),"%cDCC CHAT chat %lu %d%c",1,Adrs,Port,1);
@@ -175,13 +188,18 @@ void *ThreadProc_SendRequest(void *Info)
   if(I->User != 0)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
-    free(Chat);
     I->CB.OnError = Saf;
     I->User = Saf2;
     if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Chat);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Chat);
       EXIT_THREAD_FUNC 1);
+    }
   }
   I->CB.OnError = Saf;
   I->User = Saf2;
@@ -208,7 +226,10 @@ void BN_AcceptDCCChat(BN_PInfo I,BN_PChat Chat,const int Flags)
   if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
   {
     if(fork() != 0)
+    {
+      free(TS);
       return;
+    }
     ThreadProc_Accept(TS);
   }
   else
@@ -253,11 +274,16 @@ void *ThreadProc_Accept(void *Info)
   if(connect(Chat->Socket, (struct sockaddr *)&Chat->SAddr, sizeof(Chat->SAddr)) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
-    free(Chat);
     if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Chat);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Chat);
       EXIT_THREAD_FUNC 1);
+    }
   }
   BN_PrintDebug(2,"DCC connected with %s\n",Chat->Nick);
   BN_CreateDCCChatProcess(I,Chat);
@@ -307,11 +333,16 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
 
   if(Chat->Status == CHAT_CLOSED)
   {
-    free(Chat);
     if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Chat);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Chat);
       EXIT_THREAD_FUNC 1);
+    }
   }
   while(true)
   {
@@ -368,11 +399,16 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
         {
           if(Chat->Status != CHAT_CLOSED)
             BN_CloseDCCChat(I,Chat);
-          free(Chat);
           if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+          {
+            free(Chat);
             EXIT_PROCESS_FUNC(1);
+          }
           else
+          {
+            free(Chat);
             EXIT_THREAD_FUNC 1);
+          }
         }
         blocking++;
         if(blocking >= 10)
@@ -389,11 +425,16 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
       {
         if(Chat->Status != CHAT_CLOSED)
           BN_CloseDCCChat(I,Chat);
-        free(Chat);
         if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+        {
+          free(Chat);
           EXIT_PROCESS_FUNC(1);
+        }
         else
+        {
+          free(Chat);
           EXIT_THREAD_FUNC 1);
+        }
       }
       Chat->Buf[Chat->BufPos+len] = 0;
       Chat->BufPos += len;

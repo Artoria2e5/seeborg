@@ -93,8 +93,10 @@ void BN_SendDCCSendRequest(BN_PInfo I,const char *Nick,const int Flags, char *Fi
 #ifdef __unix__
   if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
   {
-    if(fork() != 0)
+    if(fork() != 0) {
+      free(TS);
       return;
+    }
     ThreadProc_SendRequestSend(TS);
   }
   else
@@ -155,11 +157,16 @@ void *ThreadProc_SendRequestSend(void *Info)
 #endif
   {
     CLOSE_SOCKET_FUNC(Send->Socket);
-    free(Send);
     if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Send);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Send);
       EXIT_THREAD_FUNC 1);
+    }
   }
 
   Send->Length = statbuf.st_size;
@@ -176,11 +183,16 @@ void *ThreadProc_SendRequestSend(void *Info)
   if(getsockname(I->Socket,(struct sockaddr *)&SockAddrIn,&size) == -1)
   {
     CLOSE_SOCKET_FUNC(Send->Socket);
-    free(Send);
     if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Send);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Send);
       EXIT_THREAD_FUNC 1);
+    }
   }
 
   Adrs = ntohl(SockAddrIn.sin_addr.s_addr);
@@ -188,11 +200,16 @@ void *ThreadProc_SendRequestSend(void *Info)
   if(listen(Send->Socket,0) == -1)
   {
     CLOSE_SOCKET_FUNC(Send->Socket);
-    free(Send);
     if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Send);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Send);
       EXIT_THREAD_FUNC 1);
+    }
   }
 
   snprintf(Msg,sizeof(Msg),"%cDCC SEND %s %lu %d %ld%c", 1, Send->Filename, Adrs, Port, Send->Length, 1);
@@ -204,13 +221,18 @@ void *ThreadProc_SendRequestSend(void *Info)
   if(I->User != 0)
   {
     CLOSE_SOCKET_FUNC(Send->Socket);
-    free(Send);
     I->CB.OnError = Saf;
     I->User = Saf2;
     if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    {
+      free(Send);
       EXIT_PROCESS_FUNC(1);
+    }
     else
+    {
+      free(Send);
       EXIT_THREAD_FUNC 1);
+    }
   }
   I->CB.OnError = Saf;
   I->User = Saf2;
@@ -237,7 +259,10 @@ void BN_AcceptDCCSend(BN_PInfo I,BN_PSend Send,const int Flags)
   if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
   {
     if(fork() != 0)
+    {
+      free(TS);
       return;
+    }
     ThreadProc_AcceptSend(TS);
   }
   else
@@ -360,7 +385,6 @@ void BN_CreateDCCSendProcess(BN_PInfo I,BN_PSend Send,const int TimeOut)
   if(File != NULL)
   {
     sent = 0;
-    received = 0;
     while(sent < Send->Length)
     {
       len = fread(Buffer,1,DCC_PACKETSIZE,File);
