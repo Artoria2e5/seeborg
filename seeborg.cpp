@@ -23,6 +23,7 @@
 
 #include "seeborg.h"
 #include "seeutil.h"
+#include <cppjieba/Jieba.hpp>
 
 seeborg_t gSeeBorg;
 

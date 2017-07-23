@@ -39,6 +39,9 @@
 #include <wctype.h>
 #include <wchar.h>
 
+#include <opencc/opencc.h>
+// not including jieba here -- that's a whole damn lib
+
 #ifdef _WIN32
 #include <windows.h>
 #define strcasecmp stricmp

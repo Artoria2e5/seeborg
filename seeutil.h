@@ -41,6 +41,7 @@ int lowerString(IN OUT wstring &str);
 int lowerString(IN OUT wchar_t *str);
 int trimString(IN OUT wstring &str, IN bool punct = false);
 int FilterMessage(IN OUT wstring &message);
+int NormalizeZHMessage(IN OUT wstring &message); // Yeah, opencc and puncts, shared for things
 
 // file/string functions
 int fReadStringLine(IN FILE *f, OUT wstring &outstr);

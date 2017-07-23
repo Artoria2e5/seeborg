@@ -5,6 +5,8 @@ This version of hmage's seeborg is equipped with Chinese segmentation methods an
 script normalization pass. It may fail you badly, but don't worry, it comes with
 totally no tests.
 
+howto: https://gist.github.com/Artoria2e5/d432885ee6235b4b456571cbfec86eba
+
 SeeBorg is a random phrase bot based on Markov Chains.
 
 It will sit on IRC channels you configure, will learn the words and their sequences, and will periodically reply with something that is generated from the talk it learned before.
