@@ -1,5 +1,9 @@
-SeeBorg [![CircleCI](https://circleci.com/gh/hmage/seeborg.svg?style=svg)](https://circleci.com/gh/hmage/seeborg)
+SeeBorg [![CircleCI](https://circleci.com/gh/Artoria2e5/seeborg.svg?style=svg)](https://circleci.com/gh/Artoria2e5/seeborg)
 =======
+
+This version of hmage's seeborg is equipped with Chinese segmentation methods and a
+script normalization pass. It may fail you badly, but don't worry, it comes with
+totally no tests.
 
 SeeBorg is a random phrase bot based on Markov Chains.
 

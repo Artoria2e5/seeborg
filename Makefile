@@ -1,6 +1,10 @@
 CFLAGS = -O2 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
-CXXFLAGS := $(CFLAGS)
-CFLAGS += -std=gnu99
+CXXFLAGS := $(CFLAGS) -std=gnu++11
+CFLAGS += -std=gnu11 -I deps/cppjieba/include
+LDFLAGS = -shared -O1 -lopencc
+
+# dependency: jieba's data
+JIEBA_DATA_DIR ?= ./jieba_dict
 
 TARGET_IRC=seeborg-irc
 TARGET_LINEIN=seeborg-linein
@@ -13,6 +17,8 @@ TARGET_IRC_HDRS=seeborg-irc.h
 TARGET_IRC_OBJS+=botnet/botnet.o botnet/dcc_chat.o botnet/dcc_send.o
 TARGET_IRC_OBJS+=botnet/output.o botnet/server.o botnet/utils.o
 TARGET_IRC_HDRS+=botnet/botnet.h botnet/includes.h
+
+DESTDIR ?= dist
 
 ## Linux 
 ifeq ($(shell uname), Linux)
@@ -34,7 +40,13 @@ ifeq ($(shell uname), MINGW32_NT-5.1)
 LDFLAGS += -lwsock32
 endif
 
+.PHONY: all compile install
 all: compile
+
+install: compile
+	install -d -m755 $(DESTDIR)/$(JIEBA_DATA_DIR)
+	install -t $(DESTDIR) $(TARGET_IRC) $(TARGET_LINEIN)
+	install -t $(DESTDIR)/$(JIEBA_DATA_DIR) jieba_dict/jieba.dict.utf8 jieba_dict/hmm_model.utf8 jieba_dict/user.dict.utf8 jieba_dict/idf.utf8 jieba_dict/stop_words.utf8  
 
 clean:
 	rm -f $(TARGET_IRC) $(TARGET_LINEIN) $(TARGET_OBJS) $(TARGET_IRC_OBJS) $(TARGET_LINEIN_OBJS)
@@ -46,3 +58,4 @@ $(TARGET_IRC): $(TARGET_OBJS) $(TARGET_IRC_OBJS) $(TARGET_HDRS) $(TARGET_IRC_HDR
 
 $(TARGET_LINEIN): $(TARGET_OBJS) $(TARGET_LINEIN_OBJS) $(TARGET_HDRS) $(TARGET_LINEIN_HDRS)
 	$(CXX) $(CXXFLAGS) $(TARGET_OBJS) $(TARGET_LINEIN_OBJS) -o $@ $(LDFLAGS)
+
