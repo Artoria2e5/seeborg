@@ -119,6 +119,7 @@ int trimString(wstring &str, bool punct) {
 // ---
 int FilterMessage(wstring &message) {
   size_t n;	// MSVC doesn't like 'for' locality
+  NormalizeZHMessage(message);
   for (n = message.find(L'\t'); n != message.npos; n = message.find(L'\t', n)) {
 	message.replace(n, 1, 1, L' ');
   }
@@ -145,6 +146,35 @@ int FilterMessage(wstring &message) {
   
   lowerString (message);
   return true;
+}
+
+// Perform normalization on Chinese input.
+int NormalizeZHMessage(wstring &message) {
+	size_t n;
+	static opencc::SimpleConverter occ_conv("tw2s");
+#define MSG_REPLACE(s,l,x)\
+	for (n = message.find(s); n != message.npos; n = message.find(s, n)) { \
+		message.replace(n, l, x);\
+	}
+	char * u8message = utf8_wstringtombs(message); 
+	string conv = occ_conv.Convert(u8message);
+	safe_free(u8message);
+	wstring wconv;
+	utf8_mbstowstring(conv.c_str(), wconv);
+	message.assign(std::move(wconv));
+	MSG_REPLACE(L"？", 1, L"?");
+	MSG_REPLACE(L"！", 1, L"!");
+	MSG_REPLACE(L"。", 1, L".");
+	MSG_REPLACE(L"「", 1, L"“");
+	MSG_REPLACE(L"」", 1, L"”");
+	MSG_REPLACE(L"『", 1, L"‘");
+	MSG_REPLACE(L"』", 1, L"’");
+	MSG_REPLACE(L"“", 1, L" \"");
+	MSG_REPLACE(L"”", 1, L"\" ");
+	MSG_REPLACE(L"‘", 1, L"' ");
+	MSG_REPLACE(L"’", 1, L" '");
+#undef MSG_REPLACE
+	return true;
 }
 
 // Reads string from file until we reach EOF or newline

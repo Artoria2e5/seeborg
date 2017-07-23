@@ -5,6 +5,9 @@ This version of hmage's seeborg is equipped with Chinese segmentation methods an
 script normalization pass. It may fail you badly, but don't worry, it comes with
 totally no tests.
 
+This thing depends on [OpenCC](https://github.com/byvoid/OpenCC) to compile. It
+currently does some shared linking.
+
 howto: https://gist.github.com/Artoria2e5/d432885ee6235b4b456571cbfec86eba
 
 SeeBorg is a random phrase bot based on Markov Chains.

@@ -1,7 +1,7 @@
 CFLAGS = -O2 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
-CXXFLAGS := $(CFLAGS) -std=gnu++11
-CFLAGS += -std=gnu11 -I deps/cppjieba/include
-LDFLAGS = -shared -O1 -lopencc
+CXXFLAGS := $(CFLAGS) -std=gnu++11 -I$(CURDIR)/cppjieba/include -I $(CURDIR)/cppjieba/deps
+CFLAGS += -std=gnu11
+LDFLAGS = -O1 -lopencc
 
 # dependency: jieba's data
 JIEBA_DATA_DIR ?= ./jieba_dict
