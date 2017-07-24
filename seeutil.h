@@ -36,6 +36,8 @@
 //               by default, needle is whitespace.
 //               if tokens argument contains data, new data will be appended.
 size_t splitString(IN const wstring &str, OUT vector<wstring> &tokens, IN const wchar_t* needle = L" ");
+// tokenizeString - split a string using jieba, and then spaces. Appends to the vector given.
+size_t tokenizeString(IN const wstring &str, OUT vector<wstring> &tokens);
 OUT wstring joinString(IN vector<wstring> &tokens, wstring separator = L" ");
 int lowerString(IN OUT wstring &str);
 int lowerString(IN OUT wchar_t *str);

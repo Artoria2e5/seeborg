@@ -22,6 +22,7 @@
 #include <ctype.h>
 
 #include "seeutil.h"
+#include <cppjieba/Jieba.hpp>
 
 static const wchar_t *tokenizer_nullstring = L"";
 
@@ -59,6 +60,31 @@ size_t splitString(IN const wstring &str, IN OUT vector<wstring> &tokens, IN con
 	nstart = nend+wcslen(needle);
   }
   return sz;
+}
+
+size_t tokenizeString(const wstring &str, vector<wstring> &tokens) {
+	const char* const DICT_PATH = JIEBA_DATA_DIR "/jieba.dict.utf8";
+	const char* const HMM_PATH = JIEBA_DATA_DIR "/hmm_model.utf8";
+	const char* const USER_DICT_PATH = JIEBA_DATA_DIR "/user.dict.utf8";
+	const char* const IDF_PATH = JIEBA_DATA_DIR "/idf.utf8";
+	const char* const STOP_WORD_PATH = JIEBA_DATA_DIR "/stop_words.utf8";
+	static cppjieba::Jieba jieba(DICT_PATH, HMM_PATH, USER_DICT_PATH, IDF_PATH, STOP_WORD_PATH);
+
+	if (str.empty()) return 0;
+	char* u8str = utf8_wstringtombs(str);
+	size_t added_tokens;
+
+	vector<string> jieba_out;
+	jieba.Cut(u8str, jieba_out, true);
+	safe_free(u8str);
+
+	wstring wtokoid;
+	for (string tokoid : jieba_out) {
+		utf8_mbstowstring(tokoid.c_str(), wtokoid);
+		added_tokens += splitString(wtokoid, tokens, L" ");
+	}
+
+	return added_tokens;
 }
 
 wstring joinString(vector<wstring> &tokens, wstring separator) {

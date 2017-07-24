@@ -23,7 +23,6 @@
 
 #include "seeborg.h"
 #include "seeutil.h"
-#include <cppjieba/Jieba.hpp>
 
 seeborg_t gSeeBorg;
 
@@ -109,7 +108,7 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 	splitString(message, curlines, L". ");
 	
 	sz = curlines.size();
-	for (i = 0; i < sz; i++) splitString(curlines[i], curwords);
+	for (i = 0; i < sz; i++) tokenizeString(curlines[i], curwords);
 	if (curwords.empty()) return L"";
 	
 	for (sz = curwords.size(), i = 0; i < sz; i++) {
@@ -170,7 +169,10 @@ wstring SeeBorg::Reply(IN const wstring inmsg) {
 
 		contexts = this->words[sentence.back()].size();
 		wordcontext = this->words[sentence.back()][rand() % (contexts)];
-		
+	
+		// XXX: Do we still need to tok it? Possibly a split-join somewhere
+		// has tamed zh into spaces..
+		// We shouldn't need it here. Learning cleans the lines.
 		splitString (*(wordcontext.first), linewords);
 		wordposition = wordcontext.second;
 		
@@ -220,7 +222,7 @@ int SeeBorg::Learn(const wstring &body) {
 
 int SeeBorg::LearnLine(const wstring &line) {
 	vector<wstring> curwords;
-	splitString(line, curwords);
+	tokenizeString(line, curwords);
 	wstring cleanline = joinString(curwords);
 	
 	// check to see if we've learned this line already

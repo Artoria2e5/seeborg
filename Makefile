@@ -1,10 +1,10 @@
-CFLAGS = -O2 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
+# dep: jieba's dict
+JIEBA_DATA_DIR ?= ./jieba_dict
+
+CFLAGS = -flto -O3 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -DJIEBA_DATA_DIR=\"$(JIEBA_DATA_DIR)\"
 CXXFLAGS := $(CFLAGS) -std=gnu++11 -I$(CURDIR)/cppjieba/include -I $(CURDIR)/cppjieba/deps
 CFLAGS += -std=gnu11
 LDFLAGS = -O1 -lopencc
-
-# dependency: jieba's data
-JIEBA_DATA_DIR ?= ./jieba_dict
 
 TARGET_IRC=seeborg-irc
 TARGET_LINEIN=seeborg-linein
