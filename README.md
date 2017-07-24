@@ -3,12 +3,14 @@ SeeBorg [![CircleCI](https://circleci.com/gh/Artoria2e5/seeborg.svg?style=svg)](
 
 This version of hmage's seeborg is equipped with Chinese segmentation methods and a
 script normalization pass. It may fail you badly, but don't worry, it comes with
-totally no tests.
+totally no tests so you won't find anything wrong.
 
 This thing depends on [OpenCC](https://github.com/byvoid/OpenCC) to compile. It
-currently does some shared linking.
+currently does some shared linking. The version of OpenCC used need to provide
+the "simple" interface; when in doubt, use ArchLinux or go build the latest
+source yourself.
 
-howto: https://gist.github.com/Artoria2e5/d432885ee6235b4b456571cbfec86eba
+Outline of edits: https://gist.github.com/Artoria2e5/d432885ee6235b4b456571cbfec86eba
 
 SeeBorg is a random phrase bot based on Markov Chains.
 
