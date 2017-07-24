@@ -36,6 +36,7 @@ size_t splitString(IN const wstring &str, IN OUT vector<wstring> &tokens, IN con
   size_t nstart, n;
 
   if (str.empty()) return 0;
+  if (str.find_first_not_of(needle) == str.npos) return 0;
 
   n = str.find(needle);
   for (; n != str.npos; n = str.find(needle, n)) {
@@ -80,8 +81,11 @@ size_t tokenizeString(const wstring &str, vector<wstring> &tokens) {
 
 	wstring wtokoid;
 	for (string tokoid : jieba_out) {
+		// Jieba does check spaces. It checks so hard that it consider spaces a separate token.
+		if (tokoid.empty() || tokoid == " ") continue;
 		utf8_mbstowstring(tokoid.c_str(), wtokoid);
-		added_tokens += splitString(wtokoid, tokens, L" ");
+		tokens.push_back(wtokoid);
+		added_tokens += 1; // splitString(wtokoid, tokens, L" ");
 	}
 
 	return added_tokens;
@@ -190,7 +194,7 @@ int NormalizeZHMessage(wstring &message) {
 	message.assign(std::move(wconv));
 	MSG_REPLACE(L"？", 1, L"?");
 	MSG_REPLACE(L"！", 1, L"!");
-	MSG_REPLACE(L"。", 1, L".");
+	MSG_REPLACE(L"。", 1, L". ");
 	MSG_REPLACE(L"「", 1, L"“");
 	MSG_REPLACE(L"」", 1, L"”");
 	MSG_REPLACE(L"『", 1, L"‘");
